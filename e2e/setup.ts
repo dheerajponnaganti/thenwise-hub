@@ -1,10 +1,10 @@
 import { spawn, type ChildProcess } from 'node:child_process'
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
-import { tmpdir } from 'node:os'
+import { homedir, tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 
 export const PORT = Number(process.env.HUB_E2E_PORT ?? 4170)
-const SRC = process.env.THENWISE_SRC ?? '/Users/dheeraj/memory-v2/.claude/worktrees/agent-a094e86fc81071c45'
+const SRC = process.env.THENWISE_SRC ?? join(homedir(), 'memory-v2') // a checkout of thenwise 0.1.12 or later
 let child: ChildProcess | undefined
 let dir = ''
 

@@ -11,6 +11,7 @@ import { Home } from './pages/Home'
 import { Join } from './pages/Join'
 import { Members } from './pages/Members'
 import { MyNotes } from './pages/MyNotes'
+import { Pending } from './pages/Pending'
 import { NotePage } from './pages/Note'
 import { Project } from './pages/Project'
 import { Search } from './pages/Search'
@@ -22,6 +23,7 @@ function Masthead({ signedIn, role }: { signedIn: boolean; role?: string }) {
   const health = useQuery({ queryKey: ['health'], queryFn: api.health })
   const qc = useQueryClient()
   const nav = useNavigate()
+  const queue = useQuery({ queryKey: ['settings'], queryFn: api.settings, enabled: signedIn && can(role, 'admin') })
   const cycle = () => {
     const now = savedTheme()
     applyTheme(THEMES[(THEMES.indexOf(now) + 1) % THEMES.length]!)
@@ -39,6 +41,7 @@ function Masthead({ signedIn, role }: { signedIn: boolean; role?: string }) {
             {can(role, 'share') && <NavLink to="/mine">My notes</NavLink>}
             {can(role, 'admin') && (
               <>
+                {queue.data?.review_queue && <NavLink to="/pending">Pending</NavLink>}
                 <NavLink to="/members">Members</NavLink>
                 <NavLink to="/activity">Activity</NavLink>
                 <NavLink to="/settings">Settings</NavLink>
@@ -106,6 +109,7 @@ export function App() {
           <Route path="/notes/:owner/:id" element={<NotePage />} />
           <Route path="/projects/:project" element={<Project />} />
           <Route path="/mine" element={can(user.role, 'share') ? <MyNotes /> : <Navigate to="/" replace />} />
+          <Route path="/pending" element={admin(<Pending />)} />
           <Route path="/members" element={admin(<Members />)} />
           <Route path="/activity" element={admin(<Activity />)} />
           <Route path="/settings" element={admin(<Settings />)} />

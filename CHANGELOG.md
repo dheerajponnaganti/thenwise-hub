@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.0 Stamp tray
+
+- The stamp tray on a card for editors and up: DECIDED, ABANDONED, RETIRED, SUPERSEDED BY, PINNED, tags and edit.
+- Edits hold the revision they started from. A second editor who saves first causes a conflict card with a line diff and "Take mine over it".
+- Circulation history: every revision as a dated line, openable, with "restore this" (it writes a new revision).
+- The supersede slip: search for the newer card, with plain reasons when a card cannot replace itself or is pending. It sits at the bottom of a phone screen.
+- Pending tray for admins when the review queue is on: approve or refuse.
+- Start here on Home lists pinned cards. Projects gain a Timeline tab of decisions and dead ends.
+
 ## 0.2.0 Circulation desk
 
 - Members: a ruled ledger with role stamps, expiry, last seen and removed rows struck through. Invite by link, change role, set expiry, rotate a token, remove while keeping or pulling their cards.

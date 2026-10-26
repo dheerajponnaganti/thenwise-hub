@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { allNotes } from '../api/client'
 import { Cabinet, CardSummary } from '../catalog'
+import { Link } from 'react-router-dom'
 
 export function SearchSlip({ initial = '' }: { initial?: string }) {
   const nav = useNavigate()
@@ -21,12 +22,18 @@ export function SearchSlip({ initial = '' }: { initial?: string }) {
 /** The cabinet: a drawer per project, the start-here tray, the newest cards. */
 export function Home() {
   const notes = useQuery({ queryKey: ['notes', 'all'], queryFn: () => allNotes() })
+  // The server keeps no pin time. A pinned card's last change is its pin, so the revision gives the pin order.
+  const pinned = (notes.data ?? []).filter((n) => n.pinned && n.status === 'active').sort((a, b) => a.rev - b.rev)
   return (
     <>
       <SearchSlip />
       <section className="tray" aria-labelledby="start">
         <h2 id="start">Start here</h2>
-        <p className="empty">Pinned cards for new teammates will be filed here.</p>
+        {pinned.length === 0 ? <p className="empty">Pinned cards for new teammates will be filed here.</p> : (
+          <ol className="reading-list">
+            {pinned.map((n) => <li key={`${n.owner}/${n.id}`}><Link to={`/notes/${encodeURIComponent(n.owner)}/${encodeURIComponent(n.id)}`}>{n.title}</Link> <span className="call">{n.owner}/{n.id}</span></li>)}
+          </ol>
+        )}
       </section>
       <h2>Drawers</h2>
       {notes.isPending ? <p className="muted" role="status">Pulling the drawers…</p> : notes.isError ? <p className="problem" role="alert">{notes.error.message}</p> : (
