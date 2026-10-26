@@ -23,7 +23,7 @@ a { color: var(--archive-blue); text-underline-offset: .15em; }
 .masthead { padding: 1rem 0 .5rem; border-bottom: 2px solid var(--ink); margin-bottom: 1.25rem; }
 .masthead .team { font: 600 1.5rem/1.2 var(--display); color: var(--ink); text-decoration: none; display: inline-block; }
 .masthead .team::after { content: ''; }
-.nav { display: flex; flex-wrap: wrap; gap: .25rem .75rem; margin-top: .5rem; align-items: center; }
+.nav { display: flex; flex-wrap: wrap; gap: .25rem .5rem; margin-top: .5rem; align-items: center; }
 .nav a, .linkish { font: 700 .8rem/1 var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--archive-blue); text-decoration: none; padding: .6rem .1rem; background: none; border: 0; cursor: pointer; }
 .nav a[aria-current='page'] { color: var(--ink); border-bottom: 2px solid var(--stamp); }
 .nav .grow { flex: 1; }

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.1 Fixes and a README
+
+- The nav fits one line on a desktop again; Sign out had wrapped onto a line of its own.
+- A history line reads "20 OCT 2026 · REV 12"; the date and REV had run together.
+- A README with four plates built from real screenshots: the hero, a tour, day and night, and where the Hub fits.
+
 ## 0.3.0 Stamp tray
 
 - The stamp tray on a card for editors and up: DECIDED, ABANDONED, RETIRED, SUPERSEDED BY, PINNED, tags and edit.

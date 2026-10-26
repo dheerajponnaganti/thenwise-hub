@@ -10,7 +10,7 @@ export function History({ revisions, canRestore, onRestore, busy }: { revisions:
       {revisions.map((r, i) => (
         <li key={r.rev}>
           <div className="line">
-            <span className="mono">{stampDate(r.edited_at)}</span> <span className="mono">REV {r.rev}</span> edited by {r.edited_by_name || 'unknown'}: {r.title}
+            <span className="mono">{stampDate(r.edited_at)} · REV {r.rev}</span> edited by {r.edited_by_name || 'unknown'}: {r.title}
           </div>
           <div className="row actions">
             <button type="button" className="stamp fit" aria-expanded={open === r.rev} onClick={() => setOpen(open === r.rev ? null : r.rev)}>{open === r.rev ? 'Close' : 'Open'} rev {r.rev}</button>
