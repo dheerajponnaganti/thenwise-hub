@@ -1,0 +1,37 @@
+/* Card Catalog tokens. Light is the reading room, dark is the night archive. */
+:root,
+[data-theme='light'] {
+  --paper: #f3ede2;
+  --card: #fbf7ef;
+  --ink: #1e1c19;
+  --ink-muted: #5f594f;
+  --rule: #d8cfc0;
+  --stamp: #b8381f;
+  --archive-blue: #23466b;
+  --highlighter: #f6e27a99;
+  color-scheme: light;
+}
+[data-theme='dark'] {
+  --paper: #14161b;
+  --card: #1c1f26;
+  --ink: #e9e4da;
+  --ink-muted: #9a958c;
+  --rule: #2c3038;
+  --stamp: #e0634a;
+  --archive-blue: #8fb3d9;
+  --highlighter: #7a6a1e99;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --paper: #14161b;
+    --card: #1c1f26;
+    --ink: #e9e4da;
+    --ink-muted: #9a958c;
+    --rule: #2c3038;
+    --stamp: #e0634a;
+    --archive-blue: #8fb3d9;
+    --highlighter: #7a6a1e99;
+    color-scheme: dark;
+  }
+}

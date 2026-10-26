@@ -1,0 +1,19 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 24 }
+      # The server under test: the pinned thenwise release (0.1.12 or later), kept in THENWISE_REF.
+      - run: git clone --depth 1 --branch "$THENWISE_REF" https://github.com/dheerajponnaganti/thenwise.git ../thenwise
+        env: { THENWISE_REF: v0.1.12 }
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run e2e
+        env: { THENWISE_SRC: ../thenwise }
