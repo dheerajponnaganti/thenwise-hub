@@ -15,7 +15,7 @@ thenwise team serve --dir ./team-data --console ./dist
 thenwise team invite alice --dir ./team-data   # prints a token for the first member, the owner
 ```
 
-Open `http://127.0.0.1:<port>`, paste the token, or open an invite link of the form `/join?code=<code>` and choose a name.
+Open `http://127.0.0.1:<port>`, paste the token, or open an invite link. Admins make invite links on the Members screen.
 
 Without a build, any static host works too if the server lists its origin with `--allow-origin`.
 

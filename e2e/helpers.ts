@@ -33,7 +33,7 @@ export const asMember = (token: string) => auth(token)
 
 /** Shares a note as a given member. */
 export async function share(request: APIRequestContext, token: string, id: string, n: Record<string, unknown>) {
-  const r = await request.put(`/v1/notes/${id}`, { headers: { ...auth(token), 'if-match': '*' }, data: { project: 'payments', ...n } })
+  const r = await request.put(`/v1/notes/${id}`, { headers: { ...auth(token), 'if-match': '*' }, data: { project: 'scratch', ...n } })
   expect(r.ok(), await r.text()).toBeTruthy()
 }
 

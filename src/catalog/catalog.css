@@ -119,3 +119,30 @@ textarea { border: 2px solid var(--ink); min-height: 12rem; font-family: var(--m
 label.check { display: flex; align-items: center; gap: .5rem; text-transform: none; font: 400 1rem var(--body); letter-spacing: 0; color: var(--ink); min-height: 2.75rem; }
 input[type='checkbox'] { width: 1.25rem; height: 1.25rem; accent-color: var(--archive-blue); }
 .catalog-demo { border: 1px solid var(--rule); padding: 1rem; margin: 0 0 1.5rem; background: var(--paper); color: var(--ink); }
+
+/* Ledger */
+.ledger { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--ink); margin: 0 0 1.5rem; font-variant-numeric: tabular-nums lining-nums; }
+.ledger th { text-align: left; font: 700 .75rem var(--mono); text-transform: uppercase; letter-spacing: .06em; padding: .5rem; border-bottom: 2px solid var(--ink); }
+.ledger td { padding: .5rem; border-bottom: 1px solid var(--rule); vertical-align: top; }
+.ledger tr.struck td { color: var(--ink-muted); }
+.ledger tr.struck .who { text-decoration: line-through; }
+.ledger .tray-cell { display: flex; flex-wrap: wrap; gap: .4rem; }
+.ledger .stamp { font-size: .7rem; padding: .3rem .4rem; }
+@media (max-width: 640px) {
+  .ledger, .ledger tbody, .ledger tr, .ledger td { display: block; }
+  .ledger { border: 0; background: none; }
+  .ledger thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .ledger tr { background: var(--card); border: 1px solid var(--rule); border-top: 3px solid var(--ink); margin: 0 0 .75rem; padding: .25rem .5rem; }
+  .ledger td { border: 0; padding: .25rem 0; display: flex; gap: .75rem; align-items: baseline; flex-wrap: wrap; }
+  .ledger td::before { content: attr(data-label); flex: 0 0 5.5rem; font: 700 .7rem var(--mono); text-transform: uppercase; color: var(--ink-muted); }
+  .ledger .tray-cell { padding-top: .5rem; }
+}
+.slip-once .secret { border: 1px dashed var(--ink); background: var(--paper); padding: .6rem; font-size: .95rem; user-select: all; overflow-wrap: anywhere; }
+.audit { list-style: none; padding: 0; margin: 0; }
+.audit li { border-bottom: 1px solid var(--rule); padding: .4rem 0; font: 400 .9rem/1.4 var(--mono); }
+.audit .at { color: var(--ink-muted); }
+.audit .action { color: var(--archive-blue); }
+.audit .denied { color: var(--stamp); }
+fieldset { border: 1px solid var(--rule); margin: .5rem 0; padding: .5rem .75rem; }
+legend { font: 700 .75rem var(--mono); text-transform: uppercase; color: var(--ink-muted); }
+.spaced { margin-top: 2rem; }

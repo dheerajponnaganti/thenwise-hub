@@ -2,6 +2,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { api, ApiError } from '../api/client'
+import { SlipOnce } from '../catalog/SlipOnce'
 
 const NAME = /^[a-z0-9][a-z0-9_-]{0,31}$/
 
@@ -38,9 +39,7 @@ export function Join() {
         <div className="card">
           <div className="head"><span className="call">YOUR TOKEN</span></div>
           <h2>Welcome, {joined.name}</h2>
-          <p>Keep this token for Claude Code. It is shown once.</p>
-          <p className="mono" data-testid="join-token">{joined.token}</p>
-          <p><button className="btn" onClick={enter}>Open the cabinet</button></p>
+          <SlipOnce label="Your token, for Claude Code" secret={joined.token} onDone={enter} />
         </div>
       ) : !code ? (
         <p className="problem" role="alert">This link has no invite code. Ask your admin for a new one.</p>

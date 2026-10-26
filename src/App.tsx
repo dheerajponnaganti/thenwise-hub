@@ -5,14 +5,18 @@ import { ApiError, api, onAuthLost } from './api/client'
 import { can } from './api/roles'
 import { MeContext, authNote } from './auth'
 import { applyTheme, savedTheme, THEMES } from './theme'
+import { Activity } from './pages/Activity'
 import { CatalogPage } from './pages/Catalog'
 import { Home } from './pages/Home'
 import { Join } from './pages/Join'
+import { Members } from './pages/Members'
 import { MyNotes } from './pages/MyNotes'
 import { NotePage } from './pages/Note'
 import { Project } from './pages/Project'
 import { Search } from './pages/Search'
+import { Settings } from './pages/Settings'
 import { SignIn } from './pages/SignIn'
+import { Card } from './catalog'
 
 function Masthead({ signedIn, role }: { signedIn: boolean; role?: string }) {
   const health = useQuery({ queryKey: ['health'], queryFn: api.health })
@@ -33,6 +37,13 @@ function Masthead({ signedIn, role }: { signedIn: boolean; role?: string }) {
             <NavLink to="/" end>Cabinet</NavLink>
             <NavLink to="/search">Search</NavLink>
             {can(role, 'share') && <NavLink to="/mine">My notes</NavLink>}
+            {can(role, 'admin') && (
+              <>
+                <NavLink to="/members">Members</NavLink>
+                <NavLink to="/activity">Activity</NavLink>
+                <NavLink to="/settings">Settings</NavLink>
+              </>
+            )}
           </>
         )}
         <span className="grow" />
@@ -64,6 +75,16 @@ export function App() {
   const signedOut = me.isError && me.error instanceof ApiError && me.error.status === 401
   const publicPath = ['/signin', '/join', '/catalog'].includes(loc.pathname)
 
+  // Admin screens. Anyone else sees a one-card page, never the server's 403.
+  const admin = (page: React.ReactNode) =>
+    can(user?.role, 'admin') ? page : (
+      <Card call="LIBRARIANS ONLY" at={Date.now()}>
+        <h1>Librarians only</h1>
+        <p>This desk is for admins. Ask one of them if you need something changed.</p>
+        <p><NavLink to="/">Back to the cabinet</NavLink></p>
+      </Card>
+    )
+
   let body
   if (publicPath) {
     body = (
@@ -85,6 +106,9 @@ export function App() {
           <Route path="/notes/:owner/:id" element={<NotePage />} />
           <Route path="/projects/:project" element={<Project />} />
           <Route path="/mine" element={can(user.role, 'share') ? <MyNotes /> : <Navigate to="/" replace />} />
+          <Route path="/members" element={admin(<Members />)} />
+          <Route path="/activity" element={admin(<Activity />)} />
+          <Route path="/settings" element={admin(<Settings />)} />
           <Route path="*" element={<p className="empty">No such page. <NavLink to="/">Back to the cabinet.</NavLink></p>} />
         </Routes>
       </MeContext.Provider>
