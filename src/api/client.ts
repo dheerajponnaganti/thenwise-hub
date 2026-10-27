@@ -8,6 +8,11 @@ export type Revision = S['Revision']
 export type Settings = S['Settings']
 export type AuditEntry = S['AuditList']['entries'][number]
 export type Stats = S['Stats']
+export type Chat = S['Chat']
+export type ChatBrief = S['ChatBrief']
+export type ChatHit = S['ChatHit']
+export type Turn = Chat['turns'][number]
+export type SharedProject = S['SharedProjectList']['projects'][number]
 export type Kind = Note['kind']
 export type Me = { id: string; name: string; role: string }
 
@@ -67,6 +72,16 @@ export const api = {
   stats: () => call<Stats>('GET', '/v1/stats'),
   edit: (owner: string, id: string, rev: number, patch: S['NotePatch']) => call<Note>('PATCH', np(owner, id), patch, { match: rev }),
   curate: (owner: string, id: string, action: 'retire' | 'pin' | 'unpin' | 'approve') => call<Note>('POST', `${np(owner, id)}/${action}`, {}),
+  chatsPage: async (p: { project?: string; since?: number; limit?: number; mine?: 'include' | 'only' }) => (await call<S['ChatList']>('GET', `/v1/chats${q(p)}`)).chats as ChatBrief[],
+  chat: (owner: string, session: string) => call<Chat>('GET', `/v1/chats/${encodeURIComponent(owner)}/${encodeURIComponent(session)}`),
+  searchChats: async (text: string, p: { project?: string; owner?: string } = {}) => (await call<S['ChatHitList']>('GET', `/v1/chats/search${q({ q: text, limit: 50, ...p })}`)).chats,
+  sharedProjects: async () => (await call<S['SharedProjectList']>('GET', '/v1/shared-projects')).projects,
+  unshareChat: (session: string, rev: number) => call<S['Rev']>('DELETE', `/v1/chats/${encodeURIComponent(session)}`, undefined, { match: rev }),
+  adminUnshareChat: (owner: string, session: string, rev: number) => call<S['Rev']>('DELETE', `/v1/chats/${encodeURIComponent(owner)}/${encodeURIComponent(session)}`, undefined, { match: rev }),
+  setProjectStatus: (owner: string, project: string, status: 'active' | 'paused') => call<{ status: string }>('PATCH', `/v1/shared-projects/${encodeURIComponent(owner)}/${encodeURIComponent(project)}`, { status }),
+  unshareProject: (owner: string, project: string) => call<S['ProjectGone']>('DELETE', `/v1/shared-projects/${encodeURIComponent(owner)}/${encodeURIComponent(project)}`),
+  chatSettings: () => call<S['ChatSettings']>('GET', '/v1/chat-settings'),
+  patchChatSettings: (p: S['ChatSettings']) => call<S['ChatSettings']>('PATCH', '/v1/chat-settings', p),
   supersede: (owner: string, id: string, by: string) => call<Note>('POST', `${np(owner, id)}/supersede`, { by }),
 }
 
@@ -79,4 +94,17 @@ export async function allNotes(p: { owner?: string; project?: string; status?: s
     if (page.length < 200) break
   }
   return out
+}
+
+/** Every shared chat of a project (yours too unless mine is 'only'), oldest revision first. The server pages by revision. */
+export async function allChats(project: string, mine: 'include' | 'only' = 'include', page = api.chatsPage): Promise<ChatBrief[]> {
+  const out: ChatBrief[] = []
+  let since = 0
+  for (let i = 0; i < 100; i++) {
+    const got = await page({ project, since, limit: 50, mine })
+    out.push(...got)
+    if (got.length < 50) break
+    since = Math.max(...got.map((c) => c.rev))
+  }
+  return out.sort((a, b) => b.started_at - a.started_at)
 }

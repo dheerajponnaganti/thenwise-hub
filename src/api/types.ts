@@ -241,6 +241,8 @@ export interface paths {
                     project?: string;
                     kind?: "decision" | "dead_end" | "rule" | "finding" | "note";
                     status?: "active" | "retired" | "superseded" | "pending";
+                    /** @description Each note with its text instead of a snippet. */
+                    full?: "1";
                 };
                 header?: never;
                 path?: never;
@@ -1187,6 +1189,491 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/chats/{session}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Shares a chat or a new version of it, replacing its passages in one step. If-Match is the revision last seen, or * for a chat new to the team. Needs the member role. 400 names the field when the unit holds an absolute path, a cwd, more than 2000 passages or 2 MB; 413 quota above 200 MB per member. */
+        put: {
+            parameters: {
+                query?: never;
+                header: {
+                    "If-Match": components["parameters"]["ifMatch"];
+                };
+                path: {
+                    session: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["ChatIn"];
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Rev"];
+                    };
+                };
+                400: components["responses"]["Error"];
+                401: components["responses"]["Error"];
+                403: components["responses"]["Error"];
+                /** @description Stale */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Stale"];
+                    };
+                };
+                413: components["responses"]["Error"];
+            };
+        };
+        post?: never;
+        /** Unshares a chat: passages, search entries and read counts go, a tomb stays. Needs the member role. */
+        delete: {
+            parameters: {
+                query?: {
+                    seq?: number;
+                };
+                header: {
+                    "If-Match": components["parameters"]["ifMatch"];
+                };
+                path: {
+                    session: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Rev"];
+                    };
+                };
+                401: components["responses"]["Error"];
+                403: components["responses"]["Error"];
+                /** @description Stale */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Stale"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/chats": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Chats of other members in revision order. Metadata and turn counts only, or with full=1 every turn and passage. since is the last revision seen. Any role. */
+        get: {
+            parameters: {
+                query?: {
+                    since?: components["parameters"]["since"];
+                    project?: string;
+                    limit?: number;
+                    mine?: "exclude" | "include" | "only";
+                    /** @description 1 adds turns and passages. Default: metadata only. */
+                    full?: "1";
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ChatList"];
+                    };
+                };
+                400: components["responses"]["Error"];
+                401: components["responses"]["Error"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/chats/search": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Chats that match q, best passage first, one row per chat, with a snippet. For the Hub; any role. */
+        get: {
+            parameters: {
+                query?: {
+                    q?: components["parameters"]["q"];
+                    project?: string;
+                    owner?: string;
+                    limit?: components["parameters"]["limit"];
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ChatHitList"];
+                    };
+                };
+                400: components["responses"]["Error"];
+                401: components["responses"]["Error"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/chats/{owner}/{session}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** One chat in full. A read through a browser session is counted and audited. Any role. */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    owner: string;
+                    session: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Chat"];
+                    };
+                };
+                401: components["responses"]["Error"];
+                404: components["responses"]["Error"];
+            };
+        };
+        put?: never;
+        post?: never;
+        /** An admin unshares a member's chat (a member's own goes through the one-segment path). Audited as chat.admin_unshare. Needs the admin role. */
+        delete: {
+            parameters: {
+                query?: {
+                    seq?: number;
+                };
+                header: {
+                    "If-Match": components["parameters"]["ifMatch"];
+                };
+                path: {
+                    owner: string;
+                    session: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Rev"];
+                    };
+                };
+                401: components["responses"]["Error"];
+                403: components["responses"]["Error"];
+                404: components["responses"]["Error"];
+                /** @description Stale */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Stale"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/chat-tombs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Chats unshared after a revision, in revision order. */
+        get: {
+            parameters: {
+                query?: {
+                    since?: components["parameters"]["since"];
+                    limit?: number;
+                    /** @description only: just the caller's own tombs. */
+                    mine?: "include" | "only";
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ChatTombList"];
+                    };
+                };
+                400: components["responses"]["Error"];
+                401: components["responses"]["Error"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/shared-projects": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Which member shares which project: chat count, bytes and last push. No text. Any role. */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["SharedProjectList"];
+                    };
+                };
+                401: components["responses"]["Error"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/shared-projects/{owner}/{project}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Unshares every chat of a project of a member, with tombs. The member or an admin. */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    owner: string;
+                    project: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ProjectGone"];
+                    };
+                };
+                401: components["responses"]["Error"];
+                403: components["responses"]["Error"];
+                404: components["responses"]["Error"];
+            };
+        };
+        options?: never;
+        head?: never;
+        /** Sets a project's status to paused or active (the owner's client calls this on pause and resume). The member or an admin. */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    owner: string;
+                    project: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        status: "active" | "paused";
+                    };
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            status: string;
+                        };
+                    };
+                };
+                400: components["responses"]["Error"];
+                401: components["responses"]["Error"];
+                403: components["responses"]["Error"];
+                404: components["responses"]["Error"];
+            };
+        };
+        trace?: never;
+    };
+    "/v1/chat-settings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** The team's chat settings. Needs the admin role. */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ChatSettings"];
+                    };
+                };
+                401: components["responses"]["Error"];
+                403: components["responses"]["Error"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Sets chat_retention_days: the daily sweep deletes chats that ended earlier, with tombs. null keeps chats until their owners unshare. Needs the admin role. */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["ChatSettings"];
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ChatSettings"];
+                    };
+                };
+                400: components["responses"]["Error"];
+                401: components["responses"]["Error"];
+                403: components["responses"]["Error"];
+            };
+        };
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -1283,6 +1770,7 @@ export interface components {
             source?: string;
             tags?: string[];
         };
+        /** @description A note in a list: a snippet, or its text with full=1. */
         NoteBrief: {
             owner: string;
             id: string;
@@ -1300,7 +1788,8 @@ export interface components {
             superseded_by: string | null;
             shared_by: string | null;
             source: string;
-            snippet: string;
+            snippet?: string;
+            text?: string;
         };
         Note: {
             owner: string;
@@ -1369,6 +1858,115 @@ export interface components {
                 name: string;
                 last_seen: number | null;
             }[];
+        };
+        ChatIn: {
+            project: string;
+            head: string;
+            started_at: number;
+            ended_at: number;
+            mask?: number;
+            seq?: number;
+            turns: {
+                id: string;
+                at: number;
+                line?: string;
+                /** @enum {string} */
+                kind?: "turn" | "summary";
+                passages: string[];
+                paths?: string[];
+                shas?: string[];
+                prs?: string[];
+                dead_end?: boolean;
+                dead_kind?: string;
+                /** @description The sentence that says what failed. Optional. */
+                dead_text?: string;
+            }[];
+            /** @description True when the owner deliberately shares again: undoes a tomb made on the server (admin, Hub, retention). Without it such a PUT answers 409 unshared. */
+            reshare?: boolean;
+        };
+        ChatBrief: {
+            owner: string;
+            session: string;
+            project: string;
+            rev: number;
+            started_at: number;
+            ended_at: number;
+            head: string;
+            mask: number;
+            bytes: number;
+            turn_count: number;
+        };
+        Chat: {
+            owner: string;
+            session: string;
+            project: string;
+            rev: number;
+            started_at: number;
+            ended_at: number;
+            head: string;
+            mask: number;
+            bytes: number;
+            turn_count: number;
+            turns: {
+                id: string;
+                at: number;
+                line?: string;
+                /** @enum {string} */
+                kind?: "turn" | "summary";
+                passages: string[];
+                paths?: string[];
+                shas?: string[];
+                prs?: string[];
+                dead_end?: boolean;
+                dead_kind?: string;
+                /** @description The sentence that says what failed. Optional. */
+                dead_text?: string;
+            }[];
+        };
+        ChatList: {
+            chats: (components["schemas"]["Chat"] | components["schemas"]["ChatBrief"])[];
+        };
+        ChatHit: {
+            owner: string;
+            session: string;
+            project: string;
+            rev: number;
+            started_at: number;
+            ended_at: number;
+            head: string;
+            mask: number;
+            bytes: number;
+            turn_count: number;
+            turn: string;
+            snippet: string;
+        };
+        ChatHitList: {
+            chats: components["schemas"]["ChatHit"][];
+        };
+        ChatTombList: {
+            tombs: {
+                owner: string;
+                session: string;
+                rev: number;
+            }[];
+        };
+        SharedProjectList: {
+            projects: {
+                owner: string;
+                project: string;
+                since: number;
+                status: string;
+                last_push: number;
+                chats: number;
+                bytes: number;
+            }[];
+        };
+        ProjectGone: {
+            chats: number;
+            bytes: number;
+        };
+        ChatSettings: {
+            chat_retention_days: number | null;
         };
     };
     responses: {

@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.4.0 The stacks
+
+- Shared chats are bound volumes. The project drawer gains a Chats tab: the owner's slip, the date, the first prompt as the spine label and the leaf count.
+- A volume opens as leaves, one card per turn. The prompt is the heading, the reply is the body, dead ends are stamped ABANDONED, and paths and commits are footnotes. Reply text is always shown as text.
+- Search gains a Chats tab. Each volume shows the server's snippet, and a click lands on the leaf.
+- My shares for members and up: the projects you share with counts and sizes, your own volumes under each, Unshare for a project or a volume, and Pause or Resume for a project. Paused projects carry a PAUSED stamp.
+- Members gets a Shares column. Admins get a sharing ledger with Pause, Resume and Unshare.
+- An abandoned leaf shows the dead end in its own words.
+- The nav stays on one line; My shares is linked from My notes.
+- README: a new plate, the stacks, and the promise "Chats stay home unless you share a project. Raw transcripts never travel."
+- Settings gets chat retention.
+- On a phone a volume is a vertical stack of cards, with the spine label pinned at the top.
+- Needs thenwise 0.1.17 (Teams API 1.1). Against an older server the chat screens stay away.
+
 ## 0.3.1 Fixes and a README
 
 - The nav fits one line on a desktop again; Sign out had wrapped onto a line of its own.

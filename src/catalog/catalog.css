@@ -171,3 +171,18 @@ details.hist > summary { cursor: pointer; font: 700 .85rem var(--mono); text-tra
 @media (max-width: 640px) {
   .dialog { margin: auto 0 0; width: 100%; max-width: none; border-width: 2px 0 0; padding-bottom: calc(1rem + env(safe-area-inset-bottom)); }
 }
+
+/* Volumes and leaves (hub 0.4.0) */
+.volume { background: var(--card); border: 1px solid var(--ink); border-left: 10px solid var(--stamp); border-radius: 2px; padding: .6rem .75rem; margin: 0 0 .75rem; }
+.volume .owner-slip { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .25rem .75rem; font-size: .85rem; }
+.volume .spine-label { margin: .4rem 0; font: 700 1.05rem/1.3 var(--display); }
+.volume .spine-label a { color: var(--ink); text-decoration: none; }
+.volume .spine-label a:hover { text-decoration: underline; }
+.volume .count, .spine .count { margin: 0; font: 400 .85rem var(--mono); color: var(--ink-muted); }
+.spine { position: sticky; top: 0; z-index: 2; background: var(--paper); border-bottom: 2px solid var(--stamp); padding: .5rem 0; margin: 0 0 1rem; display: flex; flex-wrap: wrap; gap: .1rem .75rem; align-items: baseline; }
+.spine h1 { flex: 1 0 100%; margin: .2rem 0; font-size: 1.25rem; line-height: 1.3; }
+.leaf { scroll-margin-top: 7rem; }
+.leaf:target .card, .leaf.here .card { outline: 2px solid var(--archive-blue); }
+.leaf .footnotes li { overflow-wrap: anywhere; }
+@media (max-width: 640px) { .spine h1 { font-size: 1.05rem; } .volume { border-left-width: 6px; } }
+.dead-text { margin: .5rem 0; font-style: italic; color: var(--stamp); }

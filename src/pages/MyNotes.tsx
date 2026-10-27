@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { allNotes, api, type NoteBrief } from '../api/client'
 import { CardSummary } from '../catalog'
 import { Confirm } from '../catalog/Confirm'
@@ -16,6 +17,7 @@ export function MyNotes() {
   return (
     <>
       <h1>My notes</h1>
+      <p className="muted">Chats you share are on <Link to="/my-shares">My shares</Link>.</p>
       {notes.isPending ? <p className="muted" role="status">Pulling your cards…</p> : notes.isError ? <p className="problem" role="alert">{notes.error.message}</p> : notes.data.length === 0 ? <p className="empty">You have not shared a card yet.</p> : notes.data.map((n) => (
         <div key={n.id}>
           <CardSummary n={n} see={<button type="button" className="stamp red" onClick={() => setTarget(n)} aria-label={`Unshare ${n.title}`}>Unshare</button>} />

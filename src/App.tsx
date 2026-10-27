@@ -8,9 +8,12 @@ import { applyTheme, savedTheme, THEMES } from './theme'
 import { Activity } from './pages/Activity'
 import { CatalogPage } from './pages/Catalog'
 import { Home } from './pages/Home'
+import { ChatPage } from './pages/Chat'
 import { Join } from './pages/Join'
 import { Members } from './pages/Members'
 import { MyNotes } from './pages/MyNotes'
+import { MyShares } from './pages/MyShares'
+import { SharingLedger } from './pages/SharingLedger'
 import { Pending } from './pages/Pending'
 import { NotePage } from './pages/Note'
 import { Project } from './pages/Project'
@@ -108,7 +111,16 @@ export function App() {
           <Route path="/search" element={<Search />} />
           <Route path="/notes/:owner/:id" element={<NotePage />} />
           <Route path="/projects/:project" element={<Project />} />
+          <Route path="/chats/:owner/:session" element={<ChatPage />} />
           <Route path="/mine" element={can(user.role, 'share') ? <MyNotes /> : <Navigate to="/" replace />} />
+          <Route path="/my-shares" element={can(user.role, 'share') ? <MyShares /> : (
+            <Card call="MEMBERS ONLY" at={Date.now()}>
+              <h1>Members only</h1>
+              <p>Sharing chats is for members and up. Viewers can read every volume.</p>
+              <p><NavLink to="/">Back to the cabinet</NavLink></p>
+            </Card>
+          )} />
+          <Route path="/shares" element={admin(<SharingLedger />)} />
           <Route path="/pending" element={admin(<Pending />)} />
           <Route path="/members" element={admin(<Members />)} />
           <Route path="/activity" element={admin(<Activity />)} />

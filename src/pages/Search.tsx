@@ -3,8 +3,8 @@ import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { api } from '../api/client'
-import { kindLabel } from '../api/format'
-import { CardSummary } from '../catalog'
+import { kindLabel, snippetParts } from '../api/format'
+import { CardSummary, Volume } from '../catalog'
 import { SearchSlip } from './Home'
 
 const KINDS = ['decision', 'dead_end', 'rule', 'finding', 'note']
@@ -20,6 +20,10 @@ export function Search() {
   const [old, setOld] = useState(false)
   const res = useQuery({ queryKey: ['search', text], queryFn: () => api.search(text), enabled: !!text.trim() })
 
+  const [view, setView] = useState<'cards' | 'chats'>('cards')
+  // An older server has no chat search. The tab stays away then.
+  const hits = useQuery({ queryKey: ['search', 'chats', text], queryFn: () => api.searchChats(text), enabled: !!text.trim(), retry: false })
+
   const all = res.data ?? []
   const shown = all.filter((n) =>
     (kind === 'all' || n.kind === kind) && (!project || n.project === project) && (!owner || n.owner === owner) &&
@@ -30,7 +34,25 @@ export function Search() {
     <>
       <h1>Search</h1>
       <SearchSlip key={text} initial={text} />
-      {!text.trim() ? <p className="empty">Type a word to search every card.</p> : res.isPending ? <p className="muted" role="status">Searching…</p> : res.isError ? <p className="problem" role="alert">{res.error.message}</p> : (
+      {!!text.trim() && !hits.isError && (
+        <Tabs.Root value={view} onValueChange={(v) => setView(v as 'cards' | 'chats')}>
+          <Tabs.List className="tabs" aria-label="Search in">
+            <Tabs.Trigger value="cards" className="tab">Cards</Tabs.Trigger>
+            <Tabs.Trigger value="chats" className="tab">Chats{hits.data ? ` (${hits.data.length})` : ''}</Tabs.Trigger>
+          </Tabs.List>
+        </Tabs.Root>
+      )}
+      {view === 'chats' && !!text.trim() && !hits.isError ? (
+        hits.isPending ? <p className="muted" role="status">Searching the stacks…</p> : (
+          <>
+            <p className="note-line" role="status">{hits.data.length} {hits.data.length === 1 ? 'volume' : 'volumes'}</p>
+            {hits.data.length === 0 && <p className="empty">No chat matches. Try fewer words.</p>}
+            {hits.data.map((h) => (
+              <Volume key={`${h.owner}/${h.session}`} c={h} turn={h.turn} snippet={snippetParts(h.snippet).map((p, i) => (p.hit ? <mark key={i}>{p.text}</mark> : <span key={i}>{p.text}</span>))} />
+            ))}
+          </>
+        )
+      ) : !text.trim() ? <p className="empty">Type a word to search every card.</p> : res.isPending ? <p className="muted" role="status">Searching…</p> : res.isError ? <p className="problem" role="alert">{res.error.message}</p> : (
         <>
           <Tabs.Root value={kind} onValueChange={setKind}>
             <Tabs.List className="tabs" aria-label="Kind">

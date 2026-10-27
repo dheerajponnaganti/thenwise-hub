@@ -1,6 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { api, ApiError, type Member } from '../api/client'
+import { byteLabel, sharesOf } from '../api/chats'
 import { stampDate } from '../api/format'
 import { Ledger, LedgerCell, LedgerRow, Stamp } from '../catalog'
 import { Confirm, Sheet } from '../catalog/Confirm'
@@ -14,6 +16,8 @@ type Action = { kind: 'role' | 'expiry' | 'rotate' | 'remove'; m: Member }
 export function Members() {
   const qc = useQueryClient()
   const members = useQuery({ queryKey: ['members'], queryFn: api.members })
+  // The shares column is a bonus. A server without chats leaves it as a dash.
+  const shared = useQuery({ queryKey: ['shared'], queryFn: api.sharedProjects, retry: false })
   const [action, setAction] = useState<Action | null>(null)
   const [inviting, setInviting] = useState(false)
   const [secret, setSecret] = useState<{ label: string; value: string } | null>(null)
@@ -24,16 +28,20 @@ export function Members() {
   return (
     <>
       <h1>Members</h1>
-      <p><button type="button" className="btn" onClick={() => { setNotice(''); setInviting(true) }}>Invite someone</button></p>
+      <p className="row actions">
+        <button type="button" className="btn fit" onClick={() => { setNotice(''); setInviting(true) }}>Invite someone</button>
+        {shared.isSuccess && <Link className="btn ghost fit" to="/shares">Sharing ledger</Link>}
+      </p>
       {notice && <p className="problem" role="status">{notice}</p>}
       {members.isPending ? <p className="muted" role="status">Opening the ledger…</p> : members.isError ? <p className="problem" role="alert">{members.error.message}</p> : (
-        <Ledger caption="Team members" columns={['Name', 'Role', 'Expires', 'Last seen', 'Stamps']}>
+        <Ledger caption="Team members" columns={['Name', 'Role', 'Expires', 'Last seen', 'Shares', 'Stamps']}>
           {members.data.map((m) => (
             <LedgerRow key={m.id} struck={m.disabled}>
               <LedgerCell label="Name"><span className="who">{m.name}</span>{m.disabled && <> <Stamp tone="muted">REMOVED</Stamp></>}</LedgerCell>
               <LedgerCell label="Role"><Stamp tone={m.role === 'owner' ? 'red' : 'ink'}>{m.role.toUpperCase()}</Stamp></LedgerCell>
               <LedgerCell label="Expires" className="mono">{m.expires_at ? stampDate(m.expires_at) : 'NEVER'}</LedgerCell>
               <LedgerCell label="Last seen" className="mono">{stampDate(m.last_seen)}</LedgerCell>
+              <LedgerCell label="Shares" className="mono">{shared.data ? (({ projects, chats, bytes }) => (chats ? `${projects} ${projects === 1 ? 'project' : 'projects'}, ${chats} ${chats === 1 ? 'chat' : 'chats'}, ${byteLabel(bytes)}` : 'none'))(sharesOf(shared.data, m.name)) : '-'}</LedgerCell>
               <LedgerCell label="Stamps" className="tray-cell">
                 {!m.disabled && m.role !== 'owner' && (
                   <>
