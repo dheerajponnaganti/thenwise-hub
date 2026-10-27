@@ -1,0 +1,21 @@
+name: Bug report
+description: Something in the Hub looks wrong, fails or breaks on a screen.
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what the Hub did instead. A screenshot helps.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: The screen, and the shortest way to see it again.
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: Hub, thenwise server, browser and device.

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.1 Open stacks
+
+- Thenwise Hub is open source under MIT, with issue forms, a contributing guide, a security policy and a code of conduct. Questions go to Thenwise Discussions.
+- README: live release and CI badges, and a "Join the reading room" section on the ways to help.
+- CI runs the browser tests against a real thenwise 0.1.20 server.
+- The members ledger test counts the Shares column.
+
 ## 0.4.0 The stacks
 
 - Shared chats are bound volumes. The project drawer gains a Chats tab: the owner's slip, the date, the first prompt as the spine label and the leaf count.

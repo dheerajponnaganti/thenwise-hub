@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions
+    url: https://github.com/dheerajponnaganti/thenwise/discussions
+    about: Ask anything about Thenwise, Teams or the Hub.
+  - name: A problem with the team server or the plugin
+    url: https://github.com/dheerajponnaganti/thenwise/issues/new/choose
+    about: Server, sync and plugin bugs belong in the thenwise repo.
+  - name: Security problem
+    url: https://github.com/dheerajponnaganti/thenwise-hub/security/advisories/new
+    about: Report it privately, not as an issue.

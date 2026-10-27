@@ -177,7 +177,7 @@ test('the ledger is one card per member on a phone', async ({ page }) => {
   await login(page, 'alice', '/members')
   await expect(row(page, 'vera')).toBeVisible()
   await noHorizontalScroll(page)
-  await expect(page.getByRole('columnheader')).toHaveCount(5)
+  await expect(page.getByRole('columnheader')).toHaveCount(6)
 })
 
 test('settings: rename the team and the export link', async ({ page, request }) => {

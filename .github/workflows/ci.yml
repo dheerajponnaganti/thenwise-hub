@@ -3,10 +3,6 @@ on: [push, pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
-    env:
-      # The server under test lives in a private repo: the browser tests run only with a read-only token for it,
-      # stored as the THENWISE_READ_TOKEN secret (a fine-grained token with Contents: read on dheerajponnaganti/thenwise).
-      HAS_SERVER: ${{ secrets.THENWISE_READ_TOKEN != '' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -16,10 +12,8 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
-      # The pinned thenwise release (0.1.12 or later).
-      - if: env.HAS_SERVER == 'true'
-        uses: actions/checkout@v4
-        with: { repository: dheerajponnaganti/thenwise, ref: v0.1.12, token: '${{ secrets.THENWISE_READ_TOKEN }}', path: .e2e/thenwise }
-      - if: env.HAS_SERVER == 'true'
-        run: npx playwright install --with-deps chromium && npm run e2e
+      # The browser tests run against a real server from a pinned thenwise release (0.1.17 or later has the chat screens).
+      - uses: actions/checkout@v4
+        with: { repository: dheerajponnaganti/thenwise, ref: v0.1.20, path: .e2e/thenwise }
+      - run: npx playwright install --with-deps chromium && npm run e2e
         env: { THENWISE_SRC: .e2e/thenwise }

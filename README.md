@@ -1,10 +1,14 @@
 <p align="center"><img src="assets/readme/hero.png" width="100%" alt="Thenwise Hub: the reading room for your team's memory. A laptop screenshot of the cabinet, with project drawers and the newest cards, and a phone screenshot of one card, stamped decided, mounted with photo corners on ruled index-card paper."></p>
 
 <p align="center">
-  <img alt="Version 0.4.0" src="https://img.shields.io/badge/version-0.4.0-1E1C19">
+  <a href="https://github.com/dheerajponnaganti/thenwise-hub/releases"><img alt="Latest release" src="https://img.shields.io/github/v/release/dheerajponnaganti/thenwise-hub?label=version&color=1E1C19"></a>
+  <a href="https://github.com/dheerajponnaganti/thenwise-hub/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/dheerajponnaganti/thenwise-hub/actions/workflows/ci.yml/badge.svg?branch=main"></a>
   <img alt="Needs thenwise 0.1.12 or later" src="https://img.shields.io/badge/thenwise-%E2%89%A5%200.1.12-23466B">
   <img alt="Works on phones" src="https://img.shields.io/badge/works%20on-phones-B8381F">
-  <img alt="Licence MIT" src="https://img.shields.io/badge/licence-MIT-5F594F">
+  <a href="LICENSE"><img alt="Licence MIT" src="https://img.shields.io/badge/licence-MIT-5F594F"></a>
+  <br>
+  <a href="https://github.com/dheerajponnaganti/thenwise/discussions"><img alt="Questions welcome" src="https://img.shields.io/badge/questions-discussions-5F594F"></a>
+  <a href="CONTRIBUTING.md"><img alt="Pull requests welcome" src="https://img.shields.io/badge/PRs-welcome-1E1C19"></a>
 </p>
 
 <h3 align="center">Your team's decisions, dead ends, findings and shared chats, filed like a library.<br>Open it in any browser. Nothing else to host.</h3>
@@ -72,13 +76,26 @@ npm run gen:types    # regenerates src/api/types.ts from api/openapi.json
 
 `api/openapi.json` is a copy of the spec from thenwise (Teams API 1.1). `npm run build` fails when `src/api/types.ts` no longer matches it.
 
-The end-to-end tests need a thenwise checkout. Set `THENWISE_SRC` to its folder (the default is `~/memory-v2`). Install the browser once with `npx playwright install chromium`.
+The end-to-end tests need a clone of [thenwise](https://github.com/dheerajponnaganti/thenwise). Set `THENWISE_SRC` to its folder. Install the browser once with `npx playwright install chromium`.
 
 `/catalog` shows every component in both themes.
 
 ## Compatibility
 
 Thenwise Hub 0.x needs `thenwise >= 0.1.12` (Teams API v1). The chat screens need `thenwise >= 0.1.17` (Teams API 1.1) and stay away on an older server. The Hub has its own version numbers.
+
+## Join the reading room
+
+The Hub gets better with every reader who says what they need. Pick your way in.
+
+- **Ask a question** in [Thenwise Discussions](https://github.com/dheerajponnaganti/thenwise/discussions), one place for Thenwise, Teams and the Hub.
+- **Report a bug** with the [bug form](https://github.com/dheerajponnaganti/thenwise-hub/issues/new?template=bug.yml). A screenshot and the device help most.
+- **Suggest an idea** with the [idea form](https://github.com/dheerajponnaganti/thenwise-hub/issues/new?template=idea.yml).
+- **Open it on your phone** and tell us where a screen stumbles.
+- **Send a pull request.** [CONTRIBUTING.md](CONTRIBUTING.md) has the setup, the tests and the house rules.
+- **Star the repo**, so the next team finds it.
+
+Found a security problem? Report it privately, as [SECURITY.md](SECURITY.md) describes.
 
 ## Licence
 

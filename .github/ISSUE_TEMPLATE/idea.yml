@@ -1,0 +1,11 @@
+name: Idea
+description: Something the Hub could show or do, or do better.
+labels: [idea]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: The idea
+      description: What you want to do, and what gets in the way today.
+    validations:
+      required: true
