@@ -15,6 +15,14 @@
 
 <br>
 
+**Thenwise Hub is the web console for Thenwise Teams.** It shows everything your team shares, notes and project chats, as a card catalog in any browser, on a laptop or a phone. Run it in three lines:
+
+```sh
+npm ci && npm run build
+thenwise team serve --dir ./team-data --console ./dist
+thenwise team invite alice --dir ./team-data   # prints the first member's token
+```
+
 [Thenwise](https://github.com/dheerajponnaganti/thenwise) gives Claude Code a memory, and Thenwise Teams lets a team share the parts that matter. The Hub is where people read it.
 
 Every shared note becomes an index card with a call number, a date stamp and its full circulation history. Every shared chat becomes a bound volume you read leaf by leaf. Each project is a drawer. Search runs across the whole cabinet. Admins sit at the librarian's desk, approve new cards, and keep the shelves tidy.
@@ -63,7 +71,7 @@ thenwise team invite alice --dir ./team-data   # prints a token for the first me
 
 Open `http://127.0.0.1:<port>` and paste the token, or open an invite link. Admins make invite links on the Members screen.
 
-Any static host works too, as long as the server lists its origin with `--allow-origin`. For a server on the internet, the [Docker kit in thenwise](https://github.com/dheerajponnaganti/thenwise/tree/main/docker) runs the server, the Hub and Caddy with automatic certificates.
+Any static host works too: build with the server's address, `VITE_THENWISE_API=https://api.example.com npm run build`, and list the Hub's origin on the server with `--allow-origin` (thenwise 0.1.23 or later). For a server on the internet, the [Docker kit in thenwise](https://github.com/dheerajponnaganti/thenwise/tree/main/docker) runs the server, the Hub and Caddy with automatic certificates.
 
 ## Develop
 
@@ -82,7 +90,7 @@ The end-to-end tests need a clone of [thenwise](https://github.com/dheerajponnag
 
 ## Compatibility
 
-Thenwise Hub 0.x needs `thenwise >= 0.1.12` (Teams API v1). The chat screens need `thenwise >= 0.1.17` (Teams API 1.1) and stay away on an older server. The Hub has its own version numbers.
+Thenwise Hub 0.x needs `thenwise >= 0.1.12` (Teams API v1). The chat screens need `thenwise >= 0.1.17` (Teams API 1.1) and stay away on an older server. A Hub on another host needs `thenwise >= 0.1.23`. The Hub has its own version numbers.
 
 ## Join the reading room
 

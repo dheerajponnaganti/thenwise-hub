@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.2 Interlibrary loan
+
+- README: the first screen says what the Hub is and runs it in three lines.
+- CI runs the browser tests against thenwise 0.1.23.
+- A Hub on another host: build with `VITE_THENWISE_API` set to the server's address, and the Hub signs in, stays signed in across reloads, and writes through a server started with `--allow-origin`. It needs thenwise with `GET /v1/session/csrf`.
+- The export link follows the server's address too.
+
 ## 0.4.1 Open stacks
 
 - Thenwise Hub is open source under MIT, with issue forms, a contributing guide, a security policy and a code of conduct. Questions go to Thenwise Discussions.

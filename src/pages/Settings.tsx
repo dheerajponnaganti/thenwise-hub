@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
-import { api } from '../api/client'
+import { API, api } from '../api/client'
 
 /** The librarian's desk: team name, the review queue, the export. */
 export function Settings() {
@@ -31,7 +31,7 @@ export function Settings() {
       <div className="slipform">
         <p className="label">Export</p>
         <p className="muted note-line">A zip of Markdown files, one per card, with an Index.md per project. It opens in Obsidian.</p>
-        <a className="btn" href="/v1/export.zip" download>Export as a zip</a>
+        <a className="btn" href={`${API}/v1/export.zip`} download>Export as a zip</a>
       </div>
       {save.isError && <p className="problem" role="alert">{save.error.message}</p>}
       {save.isSuccess && <p className="note-line" role="status">Saved.</p>}

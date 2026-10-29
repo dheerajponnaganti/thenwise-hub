@@ -14,6 +14,6 @@ jobs:
       - run: npm run build
       # The browser tests run against a real server from a pinned thenwise release (0.1.17 or later has the chat screens).
       - uses: actions/checkout@v4
-        with: { repository: dheerajponnaganti/thenwise, ref: v0.1.20, path: .e2e/thenwise }
+        with: { repository: dheerajponnaganti/thenwise, ref: v0.1.23, path: .e2e/thenwise }
       - run: npx playwright install --with-deps chromium && npm run e2e
         env: { THENWISE_SRC: .e2e/thenwise }

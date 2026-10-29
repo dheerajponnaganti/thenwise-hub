@@ -26,20 +26,30 @@ let authLost: () => void = () => {}
 /** Called when the server says the session is gone. The app sends the reader back to the card desk. */
 export const onAuthLost = (fn: () => void) => { authLost = fn }
 
-const csrf = () => document.cookie.split('; ').find((c) => c.startsWith('tw_csrf='))?.slice(8) ?? ''
+// The API's address when it lives on another host (the server runs with --allow-origin); empty when it serves this Hub.
+export const API = String(import.meta.env.VITE_THENWISE_API ?? '').replace(/\/$/, '')
+// A Hub on another host cannot read the API's tw_csrf cookie: after sign-in it asks for the value once, and the tab keeps it.
+const KEPT = 'tw_csrf'
+const kept = () => { try { return sessionStorage.getItem(KEPT) ?? '' } catch { return '' } }
+const keep = (v?: string) => { try { if (v) sessionStorage.setItem(KEPT, v); else sessionStorage.removeItem(KEPT) } catch { /* storage blocked: same-host Hubs still read the cookie */ } }
+const csrf = () => document.cookie.split('; ').find((c) => c.startsWith('tw_csrf='))?.slice(8) || kept()
 
 async function call<T>(method: string, path: string, body?: unknown, o: { match?: number; quiet?: boolean } = {}): Promise<T> {
   const headers: Record<string, string> = {}
   if (body !== undefined) headers['content-type'] = 'application/json'
   if (method !== 'GET') headers['x-thenwise-csrf'] = csrf()
   if (o.match !== undefined) headers['if-match'] = String(o.match)
-  const res = await fetch(path, { method, headers, credentials: 'same-origin', body: body === undefined ? undefined : JSON.stringify(body) })
+  const res = await fetch(API + path, { method, headers, credentials: API ? 'include' : 'same-origin', body: body === undefined ? undefined : JSON.stringify(body) })
   if (res.ok) return (res.headers.get('content-type')?.includes('json') ? res.json() : undefined) as Promise<T>
   const j = (await res.json().catch(() => ({}))) as { error?: { code?: string; message?: string }; rev?: number | null }
+  if (res.status === 401) keep()
   if (res.status === 401 && !o.quiet) authLost()
   const message = res.status === 403 ? 'Not allowed for your role.' : (j.error?.message ?? `The server answered ${res.status}.`)
   throw new ApiError(res.status, j.error?.code ?? 'error', message, { rev: j.rev })
 }
+
+/** Only when the cookie is out of reach (the API is on another host). */
+const fetchCsrf = async () => { if (!document.cookie.includes('tw_csrf=')) keep((await call<S['Csrf']>('GET', '/v1/session/csrf', undefined, { quiet: true })).csrf) }
 
 const q = (p: Record<string, string | number | undefined>) => {
   const s = new URLSearchParams()
@@ -52,9 +62,17 @@ export const api = {
   health: () => call<S['Health']>('GET', '/v1/health'),
   // Without the readable csrf cookie there is no session, so the question is not sent (it would only log a 401).
   me: () => (csrf() ? call<Me>('GET', '/v1/me', undefined, { quiet: true }) : Promise.reject(new ApiError(401, 'unauthorized', 'Not signed in.'))),
-  signIn: (token: string) => call<Member>('POST', '/v1/session', { token }, { quiet: true }),
-  signOut: () => call<S['Ok']>('DELETE', '/v1/session', undefined, { quiet: true }),
-  join: (code: string, name: string) => call<S['Joined']>('POST', '/v1/join', { code, name, session: true }, { quiet: true }),
+  signIn: async (token: string): Promise<Member> => {
+    const m = await call<Member>('POST', '/v1/session', { token }, { quiet: true })
+    await fetchCsrf()
+    return m
+  },
+  signOut: () => call<S['Ok']>('DELETE', '/v1/session', undefined, { quiet: true }).finally(() => keep()),
+  join: async (code: string, name: string) => {
+    const j = await call<S['Joined']>('POST', '/v1/join', { code, name, session: true }, { quiet: true })
+    await fetchCsrf()
+    return j
+  },
   notes: async (p: { owner?: string; project?: string; kind?: string; status?: string; limit?: number; offset?: number } = {}) =>
     (await call<S['NoteList']>('GET', `/v1/notes${q(p)}`)).notes,
   search: async (text: string) => (await call<S['NoteList']>('GET', `/v1/search${q({ q: text, limit: 50 })}`)).notes,
