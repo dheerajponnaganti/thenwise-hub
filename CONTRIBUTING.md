@@ -46,6 +46,8 @@ THENWISE_SRC=../thenwise npm run e2e
 
 ## Pull requests
 
+- **Title:** `type(area): what changed`, such as `fix(catalog): keep the card width`. Types are fix, feat, docs, test, ci, chore, refactor and perf. CI checks the form.
+- It is squash merged, and you stay the author. The title and description become the commit on `main`.
 - One change per pull request, with a test that fails without it.
 - `npm test`, `npm run lint` and `npm run typecheck` pass, and `npm run e2e` for a change on a screen.
 - Every screen works on a phone and in both themes, with no horizontal scroll.

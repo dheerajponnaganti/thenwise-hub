@@ -1,0 +1,4 @@
+rules:
+  cache-poisoning:
+    ignore:
+      - ci.yml # never publishes; the Hub has no release workflow
