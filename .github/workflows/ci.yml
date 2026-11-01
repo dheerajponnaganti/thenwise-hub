@@ -1,19 +1,48 @@
 name: ci
-on: [push, pull_request]
+# Runs on every pull request and every push to main.
+on:
+  push:
+    branches: [main]
+  pull_request:
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+permissions: {}
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: 24 }
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Check the pull request title
+        if: github.event_name == 'pull_request'
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          printf '%s\n' "$TITLE" | grep -qE '^(fix|feat|docs|test|ci|chore|refactor|perf)(\([a-z-]+\))?!?: [^ ]' || {
+            echo 'Pull request titles look like: fix(catalog): keep the card width. Types: fix, feat, docs, test, ci, chore, refactor, perf.'
+            exit 1
+          }
       - run: npm ci
       - run: npm run lint
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
       # The browser tests run against a real server from a pinned thenwise release (0.1.17 or later has the chat screens).
-      - uses: actions/checkout@v4
-        with: { repository: dheerajponnaganti/thenwise, ref: v0.1.23, path: .e2e/thenwise }
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: dheerajponnaganti/thenwise
+          ref: v0.1.23
+          path: .e2e/thenwise
+          persist-credentials: false
       - run: npx playwright install --with-deps chromium && npm run e2e
-        env: { THENWISE_SRC: .e2e/thenwise }
+        env:
+          THENWISE_SRC: .e2e/thenwise
