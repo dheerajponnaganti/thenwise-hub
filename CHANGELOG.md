@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- A shared chat shows the tool it was written in, such as Claude Code or Copilot, on its volume and spine. Needs thenwise 0.2.0 or later to send it; older chats show no tool.
+
 ## 0.4.2 Interlibrary loan
 
 - README: the first screen says what the Hub is and runs it in three lines.
