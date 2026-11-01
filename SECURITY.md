@@ -8,6 +8,12 @@ Report it privately through a [security advisory](https://github.com/dheerajponn
 
 Include what you found, the steps to see it, the Hub version and the thenwise server version.
 
+## What happens next
+
+- You get a reply within 7 days.
+- We confirm the vulnerability, fix it in a new release and publish an advisory that credits you, if you want credit.
+- Please keep the details private until the fix ships, or for 90 days, whichever comes first.
+
 ## What counts
 
 - Shared text that runs as code in the browser, in a card, a volume, a search snippet or a name.
