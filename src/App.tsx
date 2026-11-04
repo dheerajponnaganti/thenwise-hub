@@ -35,7 +35,7 @@ function Masthead({ signedIn, role }: { signedIn: boolean; role?: string }) {
   const theme = savedTheme()
   return (
     <header className="masthead">
-      <NavLink className="team" to="/">{health.data?.team ?? 'Thenwise Hub'}</NavLink>
+      <NavLink className="team" to="/"><img src="/mark.svg" alt="" width="28" height="28" />{health.data?.team ?? 'Thenwise Hub'}</NavLink>
       <nav className="nav" aria-label="Main">
         {signedIn && (
           <>
