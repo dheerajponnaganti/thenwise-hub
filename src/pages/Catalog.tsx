@@ -26,6 +26,7 @@ function Specimen() {
       <Spine c={VOLUME} />
       <Leaf n={1} t={{ id: 't1', at: Date.UTC(2026, 9, 20), line: 'Why split the shards?', passages: ['Why split the shards?\n\nBy tenant. A <script> tag stays text.'], paths: ['src/db/shards.ts'], shas: ['2ff40d5'] }} />
       <Leaf n={2} t={{ id: 't2', at: Date.UTC(2026, 9, 20), line: 'Try one big table', passages: ['It was too slow.'], dead_end: true, dead_text: 'One big table was too slow.' }} />
+      <Leaf n={3} t={{ id: 't3', at: Date.UTC(2026, 9, 21), line: 'Add retries with jitter', passages: ['Add retries with jitter\n[question] Should the retry cap be 3 or 5?\n\nThe new test fails: four calls, three expected.\n\n(stopped by the tool: 5-hour limit reached)'] }} questions={[{ id: 'q-1a2b', text: 'Should the retry cap be 3 or 5?', answered: false }]} />
       <h3>Glyphs</h3>
       <p>{GLYPHS.map((g) => <span key={g} title={g}> <Glyph name={g} size={28} title={g} /> </span>)}</p>
     </>

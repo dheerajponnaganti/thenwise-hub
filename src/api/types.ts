@@ -1903,6 +1903,7 @@ export interface components {
             ended_at: number;
             mask?: number;
             seq?: number;
+            tool?: string;
             turns: {
                 id: string;
                 at: number;
@@ -1932,6 +1933,8 @@ export interface components {
             mask: number;
             bytes: number;
             turn_count: number;
+            /** @description The coding tool the chat came from, such as Claude Code or Copilot. Empty from an older sender. */
+            tool?: string;
         };
         Chat: {
             owner: string;
@@ -1944,6 +1947,8 @@ export interface components {
             mask: number;
             bytes: number;
             turn_count: number;
+            /** @description The coding tool the chat came from, such as Claude Code or Copilot. Empty from an older sender. */
+            tool?: string;
             turns: {
                 id: string;
                 at: number;

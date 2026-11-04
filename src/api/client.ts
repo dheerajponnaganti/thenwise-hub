@@ -114,8 +114,9 @@ export async function allNotes(p: { owner?: string; project?: string; status?: s
   return out
 }
 
-/** Every shared chat of a project (yours too unless mine is 'only'), oldest revision first. The server pages by revision. */
-export async function allChats(project: string, mine: 'include' | 'only' = 'include', page = api.chatsPage): Promise<ChatBrief[]> {
+/** Every shared chat of a project, or of every project when project is undefined (yours too unless mine is 'only'),
+ * newest first. The server pages by revision. */
+export async function allChats(project: string | undefined, mine: 'include' | 'only' = 'include', page = api.chatsPage): Promise<ChatBrief[]> {
   const out: ChatBrief[] = []
   let since = 0
   for (let i = 0; i < 100; i++) {

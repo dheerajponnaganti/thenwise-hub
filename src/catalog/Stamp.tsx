@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 
 type Tone = 'ink' | 'red' | 'blue' | 'muted'
-const tone: Record<string, Tone> = { DECIDED: 'blue', ABANDONED: 'red', RETIRED: 'muted', PENDING: 'red', PINNED: 'blue', MASKED: 'ink', RULE: 'ink', FINDING: 'ink', NOTE: 'muted' }
+const tone: Record<string, Tone> = { DECIDED: 'blue', ABANDONED: 'red', RETIRED: 'muted', PENDING: 'red', PINNED: 'blue', STOPPED: 'red', 'OPEN QUESTION': 'blue', ANSWERED: 'muted', MASKED: 'ink', RULE: 'ink', FINDING: 'ink', NOTE: 'muted' }
 
 /** A rubber stamp. Words in capitals; the tone follows the word unless given. */
 export function Stamp({ children, tone: t, dashed }: { children: string; tone?: Tone; dashed?: boolean }) {

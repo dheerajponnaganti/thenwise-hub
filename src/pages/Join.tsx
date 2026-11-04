@@ -39,7 +39,7 @@ export function Join() {
         <div className="card">
           <div className="head"><span className="call">YOUR TOKEN</span></div>
           <h2>Welcome, {joined.name}</h2>
-          <SlipOnce label="Your token, for Claude Code" secret={joined.token} onDone={enter} />
+          <SlipOnce label="Your token, for thenwise team join" secret={joined.token} onDone={enter} />
         </div>
       ) : !code ? (
         <p className="problem" role="alert">This link has no invite code. Ask your admin for a new one.</p>

@@ -3,7 +3,7 @@
 <p align="center">
   <a href="https://github.com/dheerajponnaganti/thenwise-hub/releases"><img alt="Latest release" src="https://img.shields.io/github/v/release/dheerajponnaganti/thenwise-hub?label=version&color=1E1C19"></a>
   <a href="https://github.com/dheerajponnaganti/thenwise-hub/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/dheerajponnaganti/thenwise-hub/actions/workflows/ci.yml/badge.svg?branch=main"></a>
-  <img alt="Needs thenwise 0.1.12 or later" src="https://img.shields.io/badge/thenwise-%E2%89%A5%200.1.12-23466B">
+  <img alt="Needs thenwise 0.1.12 or later; 0.2.0 for tools and stops" src="https://img.shields.io/badge/thenwise-%E2%89%A5%200.1.12-23466B">
   <img alt="Works on phones" src="https://img.shields.io/badge/works%20on-phones-B8381F">
   <a href="LICENSE"><img alt="Licence MIT" src="https://img.shields.io/badge/licence-MIT-5F594F"></a>
   <br>
@@ -23,7 +23,7 @@ thenwise team serve --dir ./team-data --console ./dist
 thenwise team invite alice --dir ./team-data   # prints the first member's token
 ```
 
-[Thenwise](https://github.com/dheerajponnaganti/thenwise) gives Claude Code a memory, and Thenwise Teams lets a team share the parts that matter. The Hub is where people read it.
+[Thenwise](https://github.com/dheerajponnaganti/thenwise) gives Claude Code, Copilot CLI, Codex and Antigravity one memory, and Thenwise Teams lets a team share the parts that matter, whichever tool each person uses. The Hub is where people read it.
 
 Every shared note becomes an index card with a call number, a date stamp and its full circulation history. Every shared chat becomes a bound volume you read leaf by leaf. Each project is a drawer. Search runs across the whole cabinet. Admins sit at the librarian's desk, approve new cards, and keep the shelves tidy.
 
@@ -31,11 +31,11 @@ Every shared note becomes an index card with a call number, a date stamp and its
 
 <p align="center"><img src="assets/readme/tour.png" width="100%" alt="Three mounted screenshots. Number 1: a card with its stamps, sources and circulation history. Number 2: search for cache, with filters for kind, project, owner and date, and the match highlighted. Number 3: the pending queue, with one card waiting for Approve or Refuse."></p>
 
-- **The cabinet.** Every project is a drawer, pinned cards wait under Start here, and the newest cards sit on top.
+- **The cabinet.** Every project is a drawer, pinned cards wait under Start here, and the newest cards sit on top. Latest volumes shows the newest shared chats, each with the tool it was written in.
 - **Cards with a past.** Stamp a card decided, abandoned, retired or superseded. Footnoted sources point back to the commit or the chat. Any old revision opens in place, and an editor can bring it back.
 - **Search the whole catalog.** Full text across every card, with each match highlighted and filters for kind, project, owner and date. Superseded cards step aside until you ask for them.
 - **A drawer per project.** Each one has its cards, a timeline, and the chats teammates shared.
-- **Shared chats, shelved as volumes.** Open one and read every turn as a leaf, dead ends stamped in their own words. Search reaches into every volume.
+- **Shared chats, shelved as volumes.** Open one and read every turn as a leaf, dead ends stamped in their own words. A chat the tool cut off at a usage limit is stamped STOPPED, so half-done work shows. A question an agent left for the next one is an OPEN QUESTION slip until a later turn answers it. Search reaches into every volume.
 - **Your shares, in your hands.** My shares lists what you share. Pause a project, take a volume back, or unshare it all in one stamp.
 - **No silent overwrites.** When two people edit the same card, the Hub shows both versions and lets you keep theirs or take yours.
 - **The librarian's desk.** Turn on the review queue and a new share reaches nobody until an admin approves it. Invite people with a link, set roles, rotate a token, read the activity log, keep a sharing ledger of every shared project, set how long chats are kept, and export everything as a zip.
@@ -54,7 +54,7 @@ The reading room by day, the night archive after dark. The Hub follows your syst
 
 ## Where it fits
 
-<p align="center"><img src="assets/readme/fit.png" width="100%" alt="Three laptops running Claude Code and Thenwise share and sync with one team server. The same server serves the Hub on the same origin to any browser, on a laptop or a phone. Chats stay home unless you share a project."></p>
+<p align="center"><img src="assets/readme/fit.png" width="100%" alt="Three laptops, one running Claude Code, one Copilot CLI and one Codex, each with Thenwise, share and sync with one team server. The same server serves the Hub on the same origin to any browser, on a laptop or a phone. Chats stay home unless you share a project."></p>
 
 The Hub is a static site. The Thenwise team server serves it beside the API on the same origin, so there is one process to run and nothing else to host. Chats stay home unless you share a project. Raw transcripts never travel. The Hub shows the notes people chose to share and the chats of the projects they share.
 
