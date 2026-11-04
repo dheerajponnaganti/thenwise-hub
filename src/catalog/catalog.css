@@ -187,3 +187,7 @@ details.hist > summary { cursor: pointer; font: 700 .85rem var(--mono); text-tra
 .leaf .footnotes li { overflow-wrap: anywhere; }
 @media (max-width: 640px) { .spine h1 { font-size: 1.05rem; } .volume { border-left-width: 6px; } }
 .dead-text { margin: .5rem 0; font-style: italic; color: var(--stamp); }
+.shelf { display: grid; gap: .75rem; margin: 0 0 1.5rem; }
+.question { margin: .5rem 0; display: flex; flex-wrap: wrap; gap: .5rem; align-items: baseline; }
+.question .call { font: 400 .8rem var(--mono); color: var(--ink-muted); }
+.stopped { display: inline-flex; flex-wrap: wrap; gap: .5rem; align-items: baseline; margin: .25rem 0; font-style: italic; color: var(--stamp); }

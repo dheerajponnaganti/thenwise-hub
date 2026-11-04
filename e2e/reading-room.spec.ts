@@ -84,6 +84,8 @@ test('C1-B2 expired session mid-use goes back to the card desk', async ({ page, 
   await page.request.post('/v1/session', { data: { token: m.token } })
   await page.goto('/')
   await expect(page.getByRole('list', { name: 'Projects' })).toBeVisible()
+  // Home loads its shelves in the background; the session must expire after they land, at the click.
+  await page.waitForLoadState('networkidle')
   await context.clearCookies()
   await page.getByRole('list', { name: 'Projects' }).getByRole('link').first().click()
   await expect(page).toHaveURL(/\/signin$/)

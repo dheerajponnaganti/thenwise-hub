@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { api } from '../api/client'
+import { chatQuestions, stopOf, turnText } from '../api/marks'
 import { can } from '../api/roles'
 import { useMe } from '../auth'
 import { Leaf, Spine } from '../catalog'
@@ -16,6 +17,8 @@ export function ChatPage() {
   const { hash } = useLocation()
   const chat = useQuery({ queryKey: ['chat', owner, session], queryFn: () => api.chat(owner, session), retry: false })
   const [asking, setAsking] = useState(false)
+  // Questions the chat left with [question], and whether a later turn answered them; ids are hashed in the browser.
+  const questions = useQuery({ queryKey: ['questions', owner, session, chat.data?.rev], queryFn: () => chatQuestions(chat.data!.turns), enabled: !!chat.data })
   const mine = owner === me.name
   const unshare = useMutation({
     mutationFn: () => (mine ? api.unshareChat(session, chat.data!.rev) : api.adminUnshareChat(owner, session, chat.data!.rev)),
@@ -32,8 +35,8 @@ export function ChatPage() {
   return (
     <>
       <p className="note-line"><Link to={`/projects/${encodeURIComponent(c.project)}`}>{c.project || 'No project'}</Link></p>
-      <Spine c={c} />
-      {c.turns.map((t, i) => <Leaf key={t.id} t={t} n={i + 1} />)}
+      <Spine c={c} stopped={c.turns.length ? stopOf(turnText(c.turns[c.turns.length - 1]!)) : undefined} />
+      {c.turns.map((t, i) => <Leaf key={t.id} t={t} n={i + 1} questions={questions.data?.[t.id]} />)}
       {(mine ? can(me.role, 'share') : can(me.role, 'admin')) && (
         <p><button type="button" className="stamp red" onClick={() => setAsking(true)}>Unshare this volume</button></p>
       )}

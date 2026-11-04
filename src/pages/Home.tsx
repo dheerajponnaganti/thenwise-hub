@@ -1,8 +1,9 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQueries, useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { allNotes } from '../api/client'
-import { Cabinet, CardSummary } from '../catalog'
+import { allChats, allNotes, api } from '../api/client'
+import { stopOf, turnText } from '../api/marks'
+import { Cabinet, CardSummary, Volume } from '../catalog'
 import { Link } from 'react-router-dom'
 
 export function SearchSlip({ initial = '' }: { initial?: string }) {
@@ -16,6 +17,25 @@ export function SearchSlip({ initial = '' }: { initial?: string }) {
         <button className="btn fit">Search</button>
       </div>
     </form>
+  )
+}
+
+/** The newest shared chats across every project, each with the tool it was written in. A volume whose last turn the tool
+ * cut off (a usage limit, an error) is stamped STOPPED: a teammate's work that may be half done. Hidden when none are shared. */
+function LatestVolumes() {
+  const chats = useQuery({ queryKey: ['chats', 'latest'], queryFn: async () => (await allChats(undefined)).sort((a, b) => b.ended_at - a.ended_at).slice(0, 6) })
+  const details = useQueries({ queries: (chats.data ?? []).map((c) => ({ queryKey: ['chat', c.owner, c.session], queryFn: () => api.chat(c.owner, c.session), staleTime: 60_000 })) })
+  if (!chats.data?.length) return null
+  return (
+    <section aria-labelledby="latest">
+      <h2 id="latest">Latest volumes</h2>
+      <div className="shelf">
+        {chats.data.map((c, i) => {
+          const last = details[i]?.data?.turns.at(-1)
+          return <Volume key={`${c.owner}/${c.session}`} c={c} stopped={last ? stopOf(turnText(last)) : undefined} />
+        })}
+      </div>
+    </section>
   )
 }
 
@@ -39,6 +59,7 @@ export function Home() {
       {notes.isPending ? <p className="muted" role="status">Pulling the drawers…</p> : notes.isError ? <p className="problem" role="alert">{notes.error.message}</p> : (
         <>
           <Cabinet notes={notes.data} />
+          <LatestVolumes />
           <h2>Newest cards</h2>
           {notes.data.slice(0, 8).map((n) => <CardSummary key={`${n.owner}/${n.id}`} n={n} />)}
         </>
