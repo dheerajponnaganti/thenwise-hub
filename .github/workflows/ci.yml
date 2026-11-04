@@ -37,10 +37,11 @@ jobs:
       - run: npm test
       - run: npm run build
       # The browser tests run against a real server from a pinned thenwise release (0.2.0 sends the tool a chat came from).
+      # shortcut: pinned to the 0.2.0 release commit until the v0.2.0 tag exists; then point ref back at v0.2.0.
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: dheerajponnaganti/thenwise
-          ref: v0.2.0
+          ref: f7a55cf5668a837eefeb1a10da9c8b1b20ac1370
           path: .e2e/thenwise
           persist-credentials: false
       - run: npx playwright install --with-deps chromium && npm run e2e
