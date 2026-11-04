@@ -36,11 +36,11 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
-      # The browser tests run against a real server from a pinned thenwise release (0.1.17 or later has the chat screens).
+      # The browser tests run against a real server from a pinned thenwise release (0.2.0 sends the tool a chat came from).
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: dheerajponnaganti/thenwise
-          ref: v0.1.23
+          ref: v0.2.0
           path: .e2e/thenwise
           persist-credentials: false
       - run: npx playwright install --with-deps chromium && npm run e2e
