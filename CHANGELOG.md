@@ -1,8 +1,14 @@
 # Changelog
 
-## Unreleased
+## 0.5.0 Mixed shelves
 
 - A shared chat shows the tool it was written in, such as Claude Code or Copilot, on its volume and spine. Needs thenwise 0.2.0 or later to send it; older chats show no tool.
+- A turn the tool cut off, at a usage limit or an error, is stamped STOPPED with the reason, and so is its volume's spine. The stop line no longer shows as part of the reply.
+- The cabinet gains Latest volumes: the newest shared chats across every project, each with its tool, stamped STOPPED when a teammate's chat was cut off halfway.
+- A `[question]` an agent left for whoever comes next is an OPEN QUESTION slip on its leaf, with the same `q-xxxx` id thenwise prints. It reads ANSWERED once a later turn of the chat answers it.
+- Join: the token you keep is for `thenwise team join`, in any tool.
+- README: four tools, and the fit plate shows laptops running Claude Code, Copilot CLI and Codex.
+- CI runs the browser tests against thenwise 0.2.0.
 
 ## 0.4.2 Interlibrary loan
 
