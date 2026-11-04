@@ -7,6 +7,7 @@
 - The cabinet gains Latest volumes: the newest shared chats across every project, each with its tool, stamped STOPPED when a teammate's chat was cut off halfway.
 - A `[question]` an agent left for whoever comes next is an OPEN QUESTION slip on its leaf, with the same `q-xxxx` id thenwise prints. It reads ANSWERED once a later turn of the chat answers it.
 - Join: the token you keep is for `thenwise team join`, in any tool.
+- The masthead and the browser tab carry the Thenwise mark: two pages, then and now, and the red thread through both.
 - README: four tools, and the fit plate shows laptops running Claude Code, Copilot CLI and Codex.
 - CI runs the browser tests against thenwise 0.2.0.
 
